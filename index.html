@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Wordle بالعربية</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#6aaa64" />
 </head>
 <body>
   <header>
@@ -38,7 +40,7 @@
     <button id="setFriendBtn">حفظ الكلمة</button>
   </div>
 
-  <div id="grid" class="grid"></div>
+  <div id="grid" class="grid" aria-hidden="true"></div>
 
   <div class="input-area">
     <input id="guess" placeholder="اكتب الكلمة هنا" maxlength="5" />
@@ -46,11 +48,11 @@
     <button id="restartBtn" style="display:none">🔁 إعادة</button>
   </div>
 
-  <!-- ✅ إخفاء سطر القاموس -->
+  <!-- 🔇 تم إخفاء حالة القاموس -->
   <div id="status" class="small" style="display:none;"></div>
 
-  <!-- ✅ نافذة كيف تلعب -->
-  <div id="howModal" class="modal">
+  <!-- 🧩 نافذة كيف تلعب -->
+  <div id="howModal">
     <div class="card" role="dialog" aria-modal="true">
       <h2>كيفية اللعب</h2>
       <p>خمن الكلمة الصحيحة خلال 6 محاولات. كل تخمين يجب أن يكون كلمة صحيحة بعدد الأحرف المحدد.</p>
@@ -91,5 +93,11 @@
   <footer>By Fathi Aiche</footer>
 
   <script src="app.js"></script>
+  <script>
+    // ✅ تسجيل Service Worker إذا لم يكن مسجلًا
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+  </script>
 </body>
 </html>
