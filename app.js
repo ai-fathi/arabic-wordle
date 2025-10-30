@@ -1,4 +1,4 @@
-// الوضع الليلي
+// 🌙 الوضع الليلي
 const themeToggle = document.getElementById('themeToggle');
 function applyTheme(t) {
   document.documentElement.setAttribute('data-theme', t);
@@ -8,7 +8,7 @@ function applyTheme(t) {
 applyTheme(localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
 themeToggle.onclick = () => applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
 
-// العناصر
+// 🎮 العناصر
 const startBtn = document.getElementById('startBtn');
 const howBtn = document.getElementById('howBtn');
 const howModal = document.getElementById('howModal');
@@ -24,16 +24,18 @@ const friendBox = document.getElementById('friendBox');
 const friendWord = document.getElementById('friendWord');
 const setFriendBtn = document.getElementById('setFriendBtn');
 
+// 🪄 إظهار / إخفاء نافذة كيف تلعب
 howBtn.onclick = () => howModal.style.display = 'flex';
 closeHow.onclick = () => howModal.style.display = 'none';
 howModal.onclick = e => { if (e.target === howModal) howModal.style.display = 'none'; };
 
-// القاموس
+// 📘 القاموس
 let words = [], wordsByLen = { 3: [], 4: [], 5: [] };
 let target = '', row = 0, wordLength = 5;
 const maxAttempts = 6;
 let isFriendMode = false;
 
+// تحميل الكلمات من الملف
 async function loadWords() {
   try {
     const r = await fetch('Arabic_words.txt');
@@ -43,12 +45,12 @@ async function loadWords() {
     wordsByLen[3] = arr.filter(w => w.length === 3);
     wordsByLen[4] = arr.filter(w => w.length === 4);
     wordsByLen[5] = arr.filter(w => w.length === 5);
-    // ✅ أزلنا رسالة "القاموس محمل"
   } catch (e) {
-    statusEl.textContent = '❌ لم يتم العثور على Arabic_words.txt';
+    statusEl.textContent = '❌ لم يتم العثور على ملف الكلمات';
   }
 }
 
+// 🧩 إنشاء الشبكة
 function createGrid() {
   gridEl.innerHTML = '';
   gridEl.style.gridTemplateColumns = `repeat(${wordLength}, 60px)`;
@@ -59,6 +61,7 @@ function createGrid() {
   }
 }
 
+// 🕹️ بدء اللعبة
 function startGame() {
   isFriendMode = false;
   friendBox.style.display = 'none';
@@ -73,9 +76,10 @@ function startGame() {
   row = 0;
   createGrid();
   restartBtn.style.display = 'none';
-  statusEl.textContent = '🎯 اللعبة بدأت!';
+  statusEl.textContent = '';
 }
 
+// 🎯 وضع الأصدقاء
 function friendMode() {
   friendBox.style.display = 'block';
   gridEl.innerHTML = '';
@@ -93,10 +97,11 @@ function setFriend() {
   friendBox.style.display = 'none';
   row = 0;
   createGrid();
-  statusEl.textContent = 'الكلمة محفوظة — ابدأ التخمين';
+  statusEl.textContent = 'ابدأ التخمين الآن';
   friendWord.value = '';
 }
 
+// ✅ إرسال التخمين
 function submitGuess() {
   if (!target) { alert('ابدأ اللعبة أولاً'); return; }
   const g = guessInput.value.trim();
@@ -115,21 +120,19 @@ function submitGuess() {
     setTimeout(() => {
       alert('🎉 أحسنت! الكلمة صحيحة');
       restartBtn.style.display = 'inline-block';
-      statusEl.textContent = 'فزت!';
     }, 100);
   } else if (row === maxAttempts - 1) {
     setTimeout(() => {
       alert('💀 انتهت المحاولات! الكلمة كانت: ' + target);
       restartBtn.style.display = 'inline-block';
-      statusEl.textContent = 'انتهت المحاولات';
     }, 100);
   } else {
     row++;
-    statusEl.textContent = `تبقى ${maxAttempts - row} محاولات`;
   }
   guessInput.value = '';
 }
 
+// 🔁 إعادة اللعبة بكلمة جديدة
 function restartGame() {
   if (isFriendMode) {
     friendBox.style.display = 'block';
@@ -138,14 +141,18 @@ function restartGame() {
     target = '';
   } else {
     const pool = wordsByLen[wordLength];
-    target = pool[Math.floor(Math.random() * pool.length)]; // ✅ كلمة جديدة كل مرة
+    target = pool[Math.floor(Math.random() * pool.length)];
     row = 0;
     createGrid();
     restartBtn.style.display = 'none';
-    statusEl.textContent = '🎮 لعبة جديدة — حظًا موفقًا!';
   }
 }
 
+// ✅ منع ظهور لوحة المفاتيح (على الهاتف)
+guessInput.setAttribute('readonly', true);
+guessInput.addEventListener('focus', e => e.target.blur());
+
+// ⚙️ الأحداث
 startBtn.onclick = startGame;
 submitBtn.onclick = submitGuess;
 restartBtn.onclick = restartGame;
@@ -155,4 +162,25 @@ modeSelect.onchange = () => {
 };
 setFriendBtn.onclick = setFriend;
 
+// 🔤 تحميل القاموس
 loadWords();
+
+// 📲 كود تثبيت اللعبة (PWA)
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  const installBtn = document.createElement('button');
+  installBtn.textContent = '📲 تثبيت اللعبة';
+  installBtn.className = 'install-btn';
+  document.body.appendChild(installBtn);
+
+  installBtn.addEventListener('click', async () => {
+    installBtn.remove();
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') console.log('تم تثبيت اللعبة ✅');
+    deferredPrompt = null;
+  });
+});
