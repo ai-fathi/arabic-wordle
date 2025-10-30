@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Wordle بالعربية</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <img src="icon.svg" alt="icon" width="42" height="42" />
+    <h1>Wordle بالعربية</h1>
+  </header>
+
+  <div class="controls">
+    <label>الوضع:
+      <select id="modeSelect">
+        <option value="solo">لعب فردي</option>
+        <option value="friends">العب مع الأصدقاء</option>
+      </select>
+    </label>
+
+    <label>الصعوبة:
+      <select id="difficulty">
+        <option value="3">سهل (3)</option>
+        <option value="4">متوسط (4)</option>
+        <option value="5" selected>صعب (5)</option>
+      </select>
+    </label>
+
+    <button id="startBtn">🎮 ابدأ اللعبة</button>
+    <button id="howBtn">❓ كيف تلعب</button>
+    <button id="themeToggle">🌙</button>
+  </div>
+
+  <div id="friendBox" style="display:none;">
+    <input id="friendWord" type="password" placeholder="اكتب الكلمة السرية (3-5 أحرف)" />
+    <button id="setFriendBtn">حفظ الكلمة</button>
+  </div>
+
+  <div id="grid" class="grid"></div>
+
+  <div class="input-area">
+    <input id="guess" placeholder="اكتب الكلمة هنا" maxlength="5" />
+    <button id="submitBtn">تأكيد</button>
+    <button id="restartBtn" style="display:none">🔁 إعادة</button>
+  </div>
+
+  <!-- ✅ إخفاء سطر القاموس -->
+  <div id="status" class="small" style="display:none;"></div>
+
+  <!-- ✅ نافذة كيف تلعب -->
+  <div id="howModal" class="modal">
+    <div class="card" role="dialog" aria-modal="true">
+      <h2>كيفية اللعب</h2>
+      <p>خمن الكلمة الصحيحة خلال 6 محاولات. كل تخمين يجب أن يكون كلمة صحيحة بعدد الأحرف المحدد.</p>
+
+      <h3>أمثلة</h3>
+      <div class="row">
+        <div class="cell correct">خ</div>
+        <div class="cell">م</div>
+        <div class="cell">ن</div>
+      </div>
+      <p>✅ الأخضر يعني أن الحرف في المكان الصحيح.</p>
+
+      <div class="row">
+        <div class="cell">ك</div>
+        <div class="cell present">ل</div>
+        <div class="cell">م</div>
+        <div class="cell">ة</div>
+      </div>
+      <p>🟡 الأصفر يعني أن الحرف موجود في الكلمة ولكن في مكان آخر.</p>
+
+      <div class="row">
+        <div class="cell">ص</div>
+        <div class="cell">ح</div>
+        <div class="cell">ي</div>
+        <div class="cell">ح</div>
+        <div class="cell absent">ة</div>
+      </div>
+      <p>⚫ الرمادي يعني أن الحرف غير موجود في الكلمة.</p>
+
+      <!-- ✅ زر الإغلاق في المنتصف -->
+      <div style="text-align:center; margin-top:12px;">
+        <button id="closeHow" style="margin:auto; display:block;">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ تمت إزالة كلمة Improved -->
+  <footer>By Fathi Aiche</footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

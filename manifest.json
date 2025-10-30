@@ -1,0 +1,16 @@
+{
+  "name": "Wordle بالعربية",
+  "short_name": "Wordle AR",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6aaa64",
+  "description": "لعبة خمن الكلمة بالعربية - مستوحاة من Wordle",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
