@@ -4,54 +4,62 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Wordle بالعربية</title>
-  <link rel="stylesheet" href="styles.css" />
+
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#6aaa64" />
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="theme-color" content="#222" />
 </head>
+
 <body>
-  <header>
-    <img src="icon.svg" alt="icon" width="42" height="42" />
+  <header role="banner">
+    <img src="icon.svg" alt="أيقونة اللعبة" width="42" height="42" />
     <h1>Wordle بالعربية</h1>
+    <button id="themeToggle" aria-label="تبديل الوضع الليلي" title="تبديل الوضع">🌙</button>
   </header>
 
-  <div class="controls">
+  <div class="controls" role="region" aria-label="خيارات اللعبة">
     <label>الوضع:
-      <select id="modeSelect">
+      <select id="modeSelect" aria-label="اختيار وضع اللعبة">
         <option value="solo">لعب فردي</option>
         <option value="friends">العب مع الأصدقاء</option>
       </select>
     </label>
 
-    <label>الصعوبة:
-      <select id="difficulty">
+    <label id="diffBox">الصعوبة:
+      <select id="difficulty" aria-label="اختيار مستوى الصعوبة">
         <option value="3">سهل (3)</option>
         <option value="4">متوسط (4)</option>
         <option value="5" selected>صعب (5)</option>
       </select>
     </label>
 
-    <button id="startBtn">🎮 ابدأ اللعبة</button>
-    <button id="howBtn">❓ كيف تلعب</button>
-    <button id="themeToggle">🌙</button>
+    <button id="startBtn" aria-label="بدء اللعبة">🎮 ابدأ اللعبة</button>
+    <button id="howBtn" aria-label="كيفية اللعب">❓ كيف تلعب</button>
   </div>
 
-  <div id="friendBox" style="display:none;">
+  <div id="friendBox" style="display:none;" role="region" aria-label="إدخال كلمة الأصدقاء">
     <input id="friendWord" type="password" placeholder="اكتب الكلمة السرية (3-5 أحرف)" />
     <button id="setFriendBtn">حفظ الكلمة</button>
   </div>
 
-  <div id="grid" class="grid" aria-hidden="true"></div>
+  <div id="grid" class="grid" aria-live="polite" aria-label="لوحة اللعب"></div>
 
-  <div class="input-area">
+  <div class="input-area" role="region" aria-label="إدخال التخمين">
     <input id="guess" placeholder="اكتب الكلمة هنا" maxlength="5" />
     <button id="submitBtn">تأكيد</button>
     <button id="restartBtn" style="display:none">🔁 إعادة</button>
   </div>
 
-  <!-- 🔇 تم إخفاء حالة القاموس -->
-  <div id="status" class="small" style="display:none;"></div>
+  <div id="status" class="small" style="display:none;" aria-live="assertive"></div>
 
-  <!-- 🧩 نافذة كيف تلعب -->
+  <div id="statsBox" class="stats">
+    <h3>📊 الإحصائيات</h3>
+    <p>الألعاب: <span id="gamesPlayed">0</span></p>
+    <p>الانتصارات: <span id="wins">0</span></p>
+    <p>الخسائر: <span id="losses">0</span></p>
+  </div>
+
   <div id="howModal">
     <div class="card" role="dialog" aria-modal="true">
       <h2>كيفية اللعب</h2>
@@ -63,7 +71,7 @@
         <div class="cell">م</div>
         <div class="cell">ن</div>
       </div>
-      <p>✅ الأخضر يعني أن الحرف في المكان الصحيح.</p>
+      <p>الأخضر ✅ يعني أن الحرف في المكان الصحيح.</p>
 
       <div class="row">
         <div class="cell">ك</div>
@@ -71,7 +79,7 @@
         <div class="cell">م</div>
         <div class="cell">ة</div>
       </div>
-      <p>🟡 الأصفر يعني أن الحرف موجود في الكلمة ولكن في مكان آخر.</p>
+      <p>الأصفر 🟡 يعني أن الحرف موجود في الكلمة ولكن في مكان آخر.</p>
 
       <div class="row">
         <div class="cell">ص</div>
@@ -80,24 +88,18 @@
         <div class="cell">ح</div>
         <div class="cell absent">ة</div>
       </div>
-      <p>⚫ الرمادي يعني أن الحرف غير موجود في الكلمة.</p>
+      <p>الرمادي ⚫ يعني أن الحرف غير موجود في الكلمة.</p>
 
-      <!-- ✅ زر الإغلاق في المنتصف -->
       <div style="text-align:center; margin-top:12px;">
-        <button id="closeHow" style="margin:auto; display:block;">إغلاق</button>
+        <button id="closeHow">إغلاق</button>
       </div>
     </div>
   </div>
 
-  <!-- ✅ تمت إزالة كلمة Improved -->
-  <footer>By Fathi Aiche</footer>
+  <footer>
+    <p>By <a href="https://github.com/fathiaiche" target="_blank">Fathi Aiche</a> — Licensed under <a href="https://opensource.org/licenses/MIT" target="_blank">MIT</a></p>
+  </footer>
 
   <script src="app.js"></script>
-  <script>
-    // ✅ تسجيل Service Worker إذا لم يكن مسجلًا
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').catch(() => {});
-    }
-  </script>
 </body>
-</html>
+          </html>
