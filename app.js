@@ -131,26 +131,29 @@ function submitGuess() {
     else cell.classList.add('absent');
   }
 
-  if (g === target) {
-    stats.games++; stats.wins++; saveStats(); updateStatsDisplay();
-    setTimeout(() => {
-      alert('🎉 أحسنت! الكلمة صحيحة');
-      restartBtn.style.display = 'inline-block';
-      statusEl.textContent = 'فزت!';
-    }, 100);
-  } else if (row === maxAttempts - 1) {
-    stats.games++; stats.losses++; saveStats(); updateStatsDisplay();
-    setTimeout(() => {
-      alert('💀 انتهت المحاولات! الكلمة كانت: ' + target);
-      restartBtn.style.display = 'inline-block';
-      statusEl.textContent = 'انتهت المحاولات';
-    }, 100);
-  } else {
-    row++;
-    statusEl.textContent = `تبقى ${maxAttempts - row} محاولات`;
-  }
-  guessInput.value = '';
-  localStorage.setItem('currentGame', JSON.stringify({ target, row, wordLength }));
+  setTimeout(() => {
+    if (g === target) {
+      stats.games++; stats.wins++; saveStats(); updateStatsDisplay();
+      setTimeout(() => {
+        alert('🎉 أحسنت! الكلمة صحيحة');
+        restartBtn.style.display = 'inline-block';
+        statusEl.textContent = 'فزت!';
+        showDownloadNotif(); // إظهار إشعار التحميل
+      }, 500);
+    } else if (row === maxAttempts - 1) {
+      stats.games++; stats.losses++; saveStats(); updateStatsDisplay();
+      setTimeout(() => {
+        alert('💀 انتهت المحاولات! الكلمة كانت: ' + target);
+        restartBtn.style.display = 'inline-block';
+        statusEl.textContent = 'انتهت المحاولات';
+      }, 500);
+    } else {
+      row++;
+      statusEl.textContent = `تبقى ${maxAttempts - row} محاولات`;
+    }
+    guessInput.value = '';
+    localStorage.setItem('currentGame', JSON.stringify({ target, row, wordLength }));
+  }, 500); // تأخير لإظهار الـflip
 }
 
 function restartGame() {
@@ -173,5 +176,33 @@ setFriendBtn.onclick = setFriend;
 
 loadWords();
 updateStatsDisplay();
+
+// إشعار التحميل
+const downloadNotif = document.getElementById('downloadNotification');
+const installBtn = document.getElementById('installBtn');
+const closeNotif = document.getElementById('closeNotif');
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+});
+
+function showDownloadNotif() {
+  downloadNotif.classList.remove('hidden');
+}
+
+installBtn.onclick = () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choice) => {
+      if (choice.outcome === 'accepted') console.log('تم التحميل');
+      deferredPrompt = null;
+    });
+  }
+  downloadNotif.classList.add('hidden');
+};
+
+closeNotif.onclick = () => downloadNotif.classList.add('hidden');
 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
