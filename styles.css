@@ -1,119 +1,166 @@
-:root {
-  --bg: #fafafa;
-  --text: #111;
-  --cell-bg: #ddd;
-  --cell-border: #aaa;
-  --correct: #6aaa64;
-  --present: #c9b458;
-  --absent: #787c7e;
-  --accent: #0055cc;
-  transition: background 0.4s, color 0.4s;
-}
-
-[data-theme="dark"] {
-  --bg: #121212;
-  --text: #f5f5f5;
-  --cell-bg: #333;
-  --cell-border: #555;
-  --correct: #4caf50;
-  --present: #ff9800;
-  --absent: #9e9e9e;
-}
-
 body {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: var(--text);
   font-family: 'Tajawal', sans-serif;
-  margin: 0;
+  margin: 0; padding: 0;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  direction: rtl;
   text-align: center;
-  transition: background 0.4s ease;
-}
-
-[data-theme="dark"] body {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
+  gap: 10px;
   padding: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-bottom: 2px solid var(--accent);
+  justify-content: right;
+  background: #4b2fc1;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 10;
 }
 
-#themeToggle {
+header button, header select {
   background: transparent;
   border: none;
-  font-size: 1.4rem;
+  color: white;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 5px;
+}
+
+#modeSelect {
+  font-weight: bold;
+  color: black;
+  background: white;
+  border-radius: 6px;
+  padding: 5px;
   cursor: pointer;
 }
 
-.controls {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 12px 0;
+main {
+  padding: 70px 20px 20px;
+}
+
+#gameTitle {
+  font-size: 2.5rem;
+  margin: 20px;
 }
 
 button {
-  background: var(--accent);
+  display: block;
+  margin: 10px auto;
+  padding: 12px 40px;
+  font-size: 1.2rem;
+  background: #7d58f5;
   border: none;
-  color: white;
-  padding: 8px 14px;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.3s;
+  transition: background-color 0.3s;
+  color: white;
 }
-button:hover { background: #003c99; }
 
+button:hover {
+  background: #5c3cc1;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top:0; left:0; right:0; bottom:0;
+  background: rgba(0,0,0,0.75);
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: white;
+  color: black;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: right;
+  direction: rtl;
+  position: relative;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.4rem;
+  background: transparent;
+  border: none;
+}
+
+#gameArea {
+  margin-top: 20px;
+}
+
+/* الشبكة والمربعات */
 .grid {
   display: grid;
   gap: 8px;
   justify-content: center;
   margin: 20px auto;
-  max-width: 90vw;
 }
 
 .cell {
-  width: 50px;
-  height: 50px;
-  border: 2px solid var(--cell-border);
+  width: 60px;
+  height: 60px;
+  border: 2px solid #aaa;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
-  background: var(--cell-bg);
-  color: var(--text);
+  background: #ddd;
+  color: black;
   font-weight: bold;
   border-radius: 8px;
   transition: all 0.3s ease;
-  animation: none;
-}
-.cell.correct { background: var(--correct); color: white; animation: flip 0.5s ease; }
-.cell.present { background: var(--present); color: white; }
-.cell.absent { background: var(--absent); color: white; }
-
-@keyframes flip {
-  0% { transform: rotateY(0); }
-  50% { transform: rotateY(180deg); }
-  100% { transform: rotateY(360deg); }
 }
 
-@media (max-width: 600px) {
-  .cell { width: 40px; height: 40px; font-size: 1.2rem; }
-  .grid { gap: 5px; }
+.cell.correct {
+  background-color: #6aaa64;
+  color: white;
 }
 
-.input-area { margin: 10px; }
-#guess { padding: 6px; font-size: 1.2rem; text-align: center; }
+.cell.present {
+  background-color: #c9b458;
+  color: white;
+}
 
-.stats {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  margin: 20px auto;
-  border-radius:
+.cell.absent {
+  background-color: #787c7e;
+  color: white;
+}
+
+.input-area {
+  margin: 10px;
+}
+
+#guess {
+  padding: 6px;
+  font-size: 1.2rem;
+  text-align: center;
+  width: 220px;
+}
