@@ -8,6 +8,7 @@
   <link rel="icon" type="image/svg+xml" href="icon.svg" />
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet" />
   <meta name="theme-color" content="#222" />
 </head>
 
@@ -55,9 +56,9 @@
 
   <div id="statsBox" class="stats">
     <h3>📊 الإحصائيات</h3>
-    <p>الألعاب: <span id="gamesPlayed">0</span></p>
-    <p>الانتصارات: <span id="wins">0</span></p>
-    <p>الخسائر: <span id="losses">0</span></p>
+    <p>🎮 الألعاب: <span id="gamesPlayed">0</span></p>
+    <p>🏆 الانتصارات: <span id="wins">0</span></p>
+    <p>❌ الخسائر: <span id="losses">0</span></p>
   </div>
 
   <div id="howModal">
@@ -96,10 +97,16 @@
     </div>
   </div>
 
+  <div id="downloadNotification" class="notification hidden">
+    <p>🎉 فزت! هل تريد تحميل اللعبة للعب دون إنترنت؟</p>
+    <button id="installBtn">تحميل</button>
+    <button id="closeNotif">إغلاق</button>
+  </div>
+
   <footer>
     <p>By <a href="https://github.com/fathiaiche" target="_blank">Fathi Aiche</a> — Licensed under <a href="https://opensource.org/licenses/MIT" target="_blank">MIT</a></p>
   </footer>
 
   <script src="app.js"></script>
 </body>
-          </html>
+</html>
