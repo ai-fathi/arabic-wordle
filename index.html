@@ -2,110 +2,84 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Wordle بالعربية</title>
-
-  <link rel="icon" type="image/svg+xml" href="icon.svg" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet" />
-  <meta name="theme-color" content="#222" />
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
-
 <body>
-  <header role="banner">
-    <img src="icon.svg" alt="أيقونة اللعبة" width="42" height="42" />
-    <h1>Wordle بالعربية</h1>
-    <button id="themeToggle" aria-label="تبديل الوضع الليلي" title="تبديل الوضع">🌙</button>
+  <header>
+    <button id="howBtn" title="طريقة اللعب">❓</button>
+    <button id="statsBtn" title="الإحصائيات">📊</button>
+    <select id="modeSelect" title="اختر وضع اللعب">
+      <option value="solo">فردي</option>
+      <option value="friends">مع صديق</option>
+    </select>
+    <button id="settingsBtn" title="الإعدادات">⚙️</button>
   </header>
 
-  <div class="controls" role="region" aria-label="خيارات اللعبة">
-    <label>الوضع:
-      <select id="modeSelect" aria-label="اختيار وضع اللعبة">
-        <option value="solo">لعب فردي</option>
-        <option value="friends">العب مع الأصدقاء</option>
-      </select>
-    </label>
+  <main>
+    <h1 id="gameTitle">Wordle بالعربية</h1>
+    <button id="startBtn">ابدأ اللعبة</button>
+    <button id="downloadBtn">تحميل اللعبة</button>
+  </main>
 
-    <label id="diffBox">الصعوبة:
-      <select id="difficulty" aria-label="اختيار مستوى الصعوبة">
-        <option value="3">سهل (3)</option>
-        <option value="4">متوسط (4)</option>
-        <option value="5" selected>صعب (5)</option>
-      </select>
-    </label>
-
-    <button id="startBtn" aria-label="بدء اللعبة">🎮 ابدأ اللعبة</button>
-    <button id="howBtn" aria-label="كيفية اللعب">❓ كيف تلعب</button>
-  </div>
-
-  <div id="friendBox" style="display:none;" role="region" aria-label="إدخال كلمة الأصدقاء">
-    <input id="friendWord" type="password" placeholder="اكتب الكلمة السرية (3-5 أحرف)" />
-    <button id="setFriendBtn">حفظ الكلمة</button>
-  </div>
-
-  <div id="grid" class="grid" aria-live="polite" aria-label="لوحة اللعب"></div>
-
-  <div class="input-area" role="region" aria-label="إدخال التخمين">
-    <input id="guess" placeholder="اكتب الكلمة هنا" maxlength="5" />
-    <button id="submitBtn">تأكيد</button>
-    <button id="restartBtn" style="display:none">🔁 إعادة</button>
-  </div>
-
-  <div id="status" class="small" style="display:none;" aria-live="assertive"></div>
-
-  <div id="statsBox" class="stats">
-    <h3>📊 الإحصائيات</h3>
-    <p>🎮 الألعاب: <span id="gamesPlayed">0</span></p>
-    <p>🏆 الانتصارات: <span id="wins">0</span></p>
-    <p>❌ الخسائر: <span id="losses">0</span></p>
-  </div>
-
-  <div id="howModal">
-    <div class="card" role="dialog" aria-modal="true">
-      <h2>كيفية اللعب</h2>
+  <!-- نوافذ -->
+  <div id="howModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="howTitle">
+    <div class="modal-content">
+      <button class="closeBtn" aria-label="إغلاق النافذة">&times;</button>
+      <h2 id="howTitle">كيفية اللعب</h2>
       <p>خمن الكلمة الصحيحة خلال 6 محاولات. كل تخمين يجب أن يكون كلمة صحيحة بعدد الأحرف المحدد.</p>
-
-      <h3>أمثلة</h3>
-      <div class="row">
-        <div class="cell correct">خ</div>
-        <div class="cell">م</div>
-        <div class="cell">ن</div>
-      </div>
-      <p>الأخضر ✅ يعني أن الحرف في المكان الصحيح.</p>
-
-      <div class="row">
-        <div class="cell">ك</div>
-        <div class="cell present">ل</div>
-        <div class="cell">م</div>
-        <div class="cell">ة</div>
-      </div>
-      <p>الأصفر 🟡 يعني أن الحرف موجود في الكلمة ولكن في مكان آخر.</p>
-
-      <div class="row">
-        <div class="cell">ص</div>
-        <div class="cell">ح</div>
-        <div class="cell">ي</div>
-        <div class="cell">ح</div>
-        <div class="cell absent">ة</div>
-      </div>
-      <p>الرمادي ⚫ يعني أن الحرف غير موجود في الكلمة.</p>
-
-      <div style="text-align:center; margin-top:12px;">
-        <button id="closeHow">إغلاق</button>
-      </div>
+      <!-- يمكن اضافة أمثلة هنا -->
     </div>
   </div>
 
-  <div id="downloadNotification" class="notification hidden">
-    <p>🎉 فزت! هل تريد تحميل اللعبة للعب دون إنترنت؟</p>
-    <button id="installBtn">تحميل</button>
-    <button id="closeNotif">إغلاق</button>
+  <div id="statsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="statsTitle">
+    <div class="modal-content">
+      <button class="closeBtn" aria-label="إغلاق النافذة">&times;</button>
+      <h2 id="statsTitle">الإحصائيات</h2>
+      <p>عدد الألعاب: <span id="gamesPlayed">0</span></p>
+      <p>عدد الانتصارات: <span id="wins">0</span></p>
+      <p>عدد الخسائر: <span id="losses">0</span></p>
+    </div>
   </div>
 
-  <footer>
-    <p>By <a href="https://github.com/fathiaiche" target="_blank">Fathi Aiche</a> — Licensed under <a href="https://opensource.org/licenses/MIT" target="_blank">MIT</a></p>
-  </footer>
+  <div id="settingsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="modal-content">
+      <button class="closeBtn" aria-label="إغلاق النافذة">&times;</button>
+      <h2 id="settingsTitle">الإعدادات</h2>
+      <label>
+        الوضع الليلي
+        <input type="checkbox" id="themeToggle" />
+      </label>
+      <br/><br/>
+      <label>
+        الصعوبة:
+        <select id="difficulty">
+          <option value="3">سهل (3 أحرف)</option>
+          <option value="4">متوسط (4 أحرف)</option>
+          <option value="5" selected>صعب (5 أحرف)</option>
+        </select>
+      </label>
+      <br/><br/>
+      <button id="downloadAppBtn">تحميل اللعبة</button>
+    </div>
+  </div>
+
+  <!-- اللعبة -->
+  <section id="gameArea" class="hidden" aria-label="لعبة التخمين">
+    <div id="friendBox" class="hidden">
+      <input id="friendWord" type="password" placeholder="اكتب الكلمة السرية (3-5 أحرف)" aria-label="كلمة صديق" />
+      <button id="setFriendBtn">حفظ الكلمة</button>
+    </div>
+    <div id="grid" class="grid" aria-live="polite" aria-label="لوحة اللعب"></div>
+    <div class="input-area">
+      <input id="guess" maxlength="5" placeholder="اكتب الكلمة هنا" aria-label="ادخال الكلمة" />
+      <button id="submitBtn">تأكيد</button>
+      <button id="restartBtn" style="display:none;">إعادة اللعبة</button>
+    </div>
+    <div id="status" class="small" aria-live="assertive"></div>
+  </section>
 
   <script src="app.js"></script>
 </body>
