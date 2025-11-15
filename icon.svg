@@ -1,11 +1,126 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
-  <rect width="200" height="200" rx="28" fill="#ffffff"/>
-  <g transform="translate(30,30)">
-    <rect x="0" y="60" width="40" height="40" rx="6" fill="#6aaa64"/>
-    <rect x="50" y="60" width="40" height="40" rx="6" fill="#6aaa64"/>
-    <rect x="100" y="60" width="40" height="40" rx="6" fill="#6aaa64"/>
-    <rect x="0" y="10" width="40" height="40" rx="6" fill="#ffffff" stroke="#222"/>
-    <rect x="50" y="10" width="40" height="40" rx="6" fill="#c9b458"/>
-    <rect x="100" y="10" width="40" height="40" rx="6" fill="#ffffff" stroke="#222"/>
-  </g>
-</svg>
+<!doctype html>
+<html lang="ar" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Arabic Wordle - Replica</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #ffffff;
+    --title: #2f3438;
+    --subtitle: #4b5256;
+
+    /* حجم متجاوب بدون clamp (يعمل في WebView) */
+    --tile-size: 80px;
+  }
+
+  *{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+  }
+
+  body{
+    background: var(--bg);
+    font-family: "Poppins", sans-serif;
+
+    min-height:100vh;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:40px;
+  }
+
+  .wrap{
+    text-align:center;
+    width:100%;
+  }
+
+  .lang{
+    font-weight:700;
+    color:var(--title);
+    font-size:32px;
+    margin-bottom:30px;
+  }
+
+  .tiles{
+    display:flex;
+    gap:0; /* بدون فراغات */
+    justify-content:center;
+    align-items:center;
+
+    padding-left:25px;
+    padding-right:25px;
+
+    margin-bottom:35px;
+  }
+
+  .tile{
+    width:var(--tile-size);
+    height:var(--tile-size);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#fff;
+    font-weight:800;
+
+    /* خط متجاوب للتطبيقات */
+    font-size: calc(var(--tile-size) * 0.50);
+
+    border-radius:14px;
+    box-shadow:
+      0 8px 0 rgba(0,0,0,0.08),
+      0 14px 30px rgba(16,24,40,0.08),
+      inset 0 -6px 10px rgba(0,0,0,0.06);
+  }
+
+  /* ألوان المربعات */
+  .t1{ background:#3aa757; }
+  .t2{ background:#f9cf30; color:#222; }
+  .t3{ background:#9aa0a6; }
+  .t4{ background:#34c1e8; }
+  .t5{ background:#9aa0a6; }
+  .t6{ background:#9b59d1; }
+
+  .subtitle{
+    color:var(--subtitle);
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:3px;
+  }
+
+  /* حجم أصغر للجوال */
+  @media (max-width:500px){
+    :root{
+      --tile-size: 60px;
+    }
+  }
+
+</style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="lang">Arabic</div>
+
+    <div class="tiles">
+      <div class="tile t1">W</div>
+      <div class="tile t2">O</div>
+      <div class="tile t3">R</div>
+      <div class="tile t4">D</div>
+      <div class="tile t5">L</div>
+      <div class="tile t6">E</div>
+    </div>
+
+    <div class="subtitle">GUESS THE WORD</div>
+
+  </div>
+</body>
+</html>
