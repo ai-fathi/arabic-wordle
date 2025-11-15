@@ -201,3 +201,4 @@ downloadBtn.onclick = () => alert('ضع هنا رابط تحميل اللعبة'
 // تحميل الكلمات وتهيئة اللعبة
 loadWords();
 updateStatsDisplay();
+      
